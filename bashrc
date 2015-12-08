@@ -80,8 +80,8 @@
 # Aliases
 #
 # Some people use a different file for aliases
-if [ -f "${HOME}/.bash_aliases" ]; then
-  source "${HOME}/.bash_aliases"
+if [ -f "${HOME}/.bash_local_aliases" ]; then
+  source "${HOME}/.bash_local_aliases"
 fi
 #
 # Some example alias instructions
@@ -113,9 +113,13 @@ alias vdir='ls --color=auto --format=long'
 alias ll='ls -l'                              # long list
 alias la='ls -A'                              # all but . and ..
 alias l='ls -CF'                              #
+alias tarz='tar -zxvf'
+alias tarb='tar -jxvf'
 
-. ~/bin/git-completion.bash
-. ~/bin/git-prompt.sh
+if [ -f "${HOME}/bin/git-completion.bash" ]; then
+    source "${HOME}/bin/git-completion.sh"
+if [ -f "${HOME}/bin/git-prompt.bash" ]; then
+    source "${HOME}/bin/git-prompt.sh"
 export GIT SHOWDIRTYSTATE=1
 
 if [ `id -u` -eq 0 ]; then
