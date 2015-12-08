@@ -39,7 +39,8 @@ if not os.path.exists(backup_dir):
 dotfiles = os.listdir(dotfiles_dir)
 
 # Filter ignored files
-for dotf in dotfiles:
+df = dotfiles.copy()
+for dotf in df:
     if dotf in IGNORED_FILES:
         dotfiles.remove(dotf)
 
