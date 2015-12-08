@@ -116,10 +116,12 @@ alias l='ls -CF'                              #
 alias tarz='tar -zxvf'
 alias tarb='tar -jxvf'
 
-if [ -f "${HOME}/bin/git-completion.bash" ]; then
+if [ -f "${HOME}/bin/git-completion.sh" ]; then
     source "${HOME}/bin/git-completion.sh"
-if [ -f "${HOME}/bin/git-prompt.bash" ]; then
+fi
+if [ -f "${HOME}/bin/git-prompt.sh" ]; then
     source "${HOME}/bin/git-prompt.sh"
+fi
 export GIT SHOWDIRTYSTATE=1
 
 if [ `id -u` -eq 0 ]; then
