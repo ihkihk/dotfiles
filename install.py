@@ -5,6 +5,23 @@ import sys
 
 IGNORED_FILES = (".git", "install.py")
 
+# Obtain ID of the station
+ID_FILE = os.path.expanduser("~/.id")
+station_id = None
+if os.path.exists(ID_FILE):
+    with open(ID_FILE) as fd:
+        try:
+            station_id = eval(fd.read())
+        except:
+           print("> ERROR reading ~/.id file")
+else:
+    print("> Missing .id file in HOME. Unknown station")
+
+if station_id:
+    print("> Station location: {location}, pc {pc}, label {label}".
+          format(**station_id))
+
+
 homedir = os.path.expanduser("~")
 print("> Home folder is: ", homedir)
 progname = sys.argv[0]
@@ -54,6 +71,10 @@ for dotf in dotfiles:
             os.remove(matching_file)
             os.symlink(dotfile_fullp, matching_file)
     else:
+	# Detect a broken symlink
+        if os.path.islink(matching_file):
+            print("Detected a broken symlink: " + matching_file)
+            os.remove(matching_file) 
         print("Will install a new file in HOME: ", dotf)
         os.symlink(dotfile_fullp, matching_file)
 
