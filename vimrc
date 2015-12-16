@@ -4,11 +4,7 @@ filetype off
 call pathogen#infect()
 call pathogen#helptags()
 
-set incsearch
-"set tabline=tabline-layout
 
-map <F5> <esc>:w<CR>:bnext<CR>
-map <S-F5> <esc>:w<CR>:bprev<CR>
 
 " URL: http://vim.wikia.com/wiki/Example_vimrc
 " Authors: http://vim.wikia.com/wiki/Vim_on_Freenode
@@ -23,8 +19,7 @@ map <S-F5> <esc>:w<CR>:bprev<CR>
 " These options and commands enable some very useful features in Vim, that
 " no user should have to live without.
 
-" Set 'nocompatible' to ward off unexpected things that your distro might
-" have made, as well as sanely reset options when re-sourcing .vimrc
+" We're in the 21st century and don't need and backward compatibility with vi
 set nocompatible
 
 " Attempt to determine the type of a file based on its name and possibly its
@@ -34,7 +29,6 @@ filetype indent plugin on
 
 " Enable syntax highlighting
 syntax on
-
 
 "------------------------------------------------------------
 " Must have options {{{1
@@ -64,28 +58,43 @@ set hidden
 
 " Better command-line completion
 set wildmenu
+set wildmode=list:longest
 
 " Show partial commands in the last line of the screen
 set showcmd
 
+set incsearch
+set showmatch
 " Highlight searches (use <C-L> to temporarily turn off highlighting; see the
 " mapping of <C-L> below)
 set hlsearch
+
+" Repair the horrible broken regexp handling and make it PCRE compatible
+nnoremap / /\v
+vnoremap / /\v
+
+" Apply substitions globally on lines, i.e. add /g to :%s/foo/bar
+set gdefault
 
 " Modelines have historically been a source of security vulnerabilities. As
 " such, it may be a good idea to disable them and use the securemodelines
 " script, <http://www.vim.org/scripts/script.php?script_id=1876>.
 " set nomodeline
 
+" Some more options as seen on
+" http://stevelosh.com/blog/2010/09/coming-home-to-vim
+set encoding=utf-8
+set scrolloff=3
+set showmode
+set cursorline
+set ttyfast
+set relativenumber
+set undofile
+
 
 "------------------------------------------------------------
 " Usability options {{{1
 "
-" These are options that users frequently set in their .vimrc. Some of them
-" change Vim's behaviour in ways which deviate from the true Vi way, but
-" which are considered to add usability. Which, if any, of these options to
-" use is very much a personal preference, but they are harmless.
-
 " Use case insensitive search, except when using capital letters
 set ignorecase
 set smartcase
@@ -150,16 +159,29 @@ let mapleader=","
 " Indentation settings according to personal preference.
 
 " Indentation settings for using 4 spaces instead of tabs.
-" Do not change 'tabstop' from its default value of 8 with this setup.
+set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set expandtab
 
-" Indentation settings for using hard tabs for indent. Display tabs as
-" four characters wide.
-"set shiftwidth=4
-"set tabstop=4
+"------------------------------------------------------------
+" Handle long lines {{{1
+"
+" Handle long lines correctly
 
+set wrap
+set textwidth=79
+set formatoptions=qrn1
+set colorcolumn=85
+
+" Show invisible characters
+set list
+set listchars=tab:▸\ ,eol:¬
+
+" Fix j and k to move by screen lines and not in some archaic mode of file
+" lines
+nnoremap j gj
+nnoremap k gk
 
 "------------------------------------------------------------
 " Mappings {{{1
@@ -174,7 +196,11 @@ map Y y$
 " next search
 nnoremap <C-L> :nohl<CR><C-L>
 
+inoremap jj <ESC>
 
+
+map <F5> <esc>:w<CR>:bnext<CR>
+map <S-F5> <esc>:w<CR>:bprev<CR>
 au FileType python set omnifunc=pythoncomplete#Complete
 let g:SuperTabDefaultCompletionType = "context"
 set completeopt=menuone,longest,preview
@@ -186,8 +212,30 @@ nmap <leader>a <Esc>:Ack!
 map <leader>j :RopeGotoDefinition<CR>
 map <leader>r :RopeRename<CR>
 map <leader>n :NERDTreeToggle<CR>
+let g:ackprg = 'ag --vimgrep'
+" Make ,W remove all white space
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+" Re-hardwrap paragraphs of text
+nnoremap <leader>q gqip
+" Open .vimrc in a side window
+nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+" Open a vertical split and immediately switch over to it
+nnoremap <leader>w <C-w>v<C-w>l
+" Remap the keys used to move around the splits
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
 
 "------------------------------------------------------------
 
 au BufNewFile,BufRead *.md set filetype=markdown
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+" Like in TextMate - save the buffer always on changing
+" When was the last time you didn't want this?
+au FocusLost * :wa
 
