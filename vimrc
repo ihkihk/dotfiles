@@ -1,9 +1,15 @@
-colorscheme hybrid
-
 filetype off
 call pathogen#infect()
 call pathogen#helptags()
 
+
+set background=light
+"colorscheme hybrid
+colorscheme solarized
+
+" These are the colors of EOL (SpecialKey is for TAB/NBSP; NonText for EOL)
+hi SpecialKey ctermfg=252
+hi NonText ctermfg=254
 
 
 " URL: http://vim.wikia.com/wiki/Example_vimrc
@@ -227,6 +233,10 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
+autocmd BufRead *.py set makeprg=python3\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
+autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+inoremap <F8> <ESC>:!python3 %<CR>
+nnoremap <F8> :!python3 %<CR>
 
 "------------------------------------------------------------
 
