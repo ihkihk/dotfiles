@@ -2,14 +2,16 @@ filetype off
 call pathogen#infect()
 call pathogen#helptags()
 
-
+" The following sets the visibility of the special chars like EOL, TAB, etc.
+let g:solarized_visibility="low"
 set background=light
 "colorscheme hybrid
 colorscheme solarized
+call togglebg#map("<F6>")
 
 " These are the colors of EOL (SpecialKey is for TAB/NBSP; NonText for EOL)
-hi SpecialKey ctermfg=252
-hi NonText ctermfg=254
+"hi SpecialKey ctermfg=252
+"hi NonText ctermfg=254
 
 
 " URL: http://vim.wikia.com/wiki/Example_vimrc
