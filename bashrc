@@ -24,6 +24,7 @@ case $- in
       *) return;;
 esac
 
+echo Executing ~/.bashrc
 
 ############
 # Location #
@@ -187,9 +188,10 @@ if [ "$LOCLABEL" = home ]; then
   GIT_AUTHOR_EMAIL="ivokassamakov@gmail.com"
 elif [ "$LOCLABEL" = work ]; then
   GIT_AUTHOR_EMAIL="ikassamakov@etel.ch"
+  GIT_HTTP_USER_AGENT="Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.76 Safari/537.36"
 fi
 GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
-export SHOWDIRTYSTATE=1 GIT_AUTHOR_EMAIL GIT_COMMITTER_EMAIL
+export SHOWDIRTYSTATE=1 GIT_AUTHOR_EMAIL GIT_COMMITTER_EMAIL GIT_HTTP_USER_AGENT
 
 
 

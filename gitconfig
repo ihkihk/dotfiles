@@ -1,18 +1,106 @@
 [user]
-	name = Ivailo Kassamakov
+    name = Ivailo Kassamakov
+[github]
+    user  = ihkihk
+    token = token
 [color]
-	diff = auto
-	branch = auto
-	status = auto
-	interactive = auto
-[alias]
-	st = status
-	ci = commit
-	co = checkout
-	br = branch
-	unstage = reset HEAD --
-	log1 = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+    diff = auto
+    branch = auto
+    status = auto
+    interactive = auto
+    ui = true
+[color "grep"]
+    linenumber = yellow bold
+    match = red
+    filename = magenta
+[apply]
+    whitespace = warn
+[web]
+    browser = google-chrome
 [push]
-	default = simple
+    default = simple
 [credential]
-	helper = cache
+    helper = cache
+[diff]
+    tool = bc4
+[merge]
+    tool = bc4
+[difftool]
+    prompt = false
+[mergetool]
+    prompt = false
+[difftool "bc4"]
+    cmd = "\"/cygdrive/c/Program Files (x86)/Beyond Compare 4/Bcomp.exe\" \"$(cygpath -w \"$LOCAL\")\" \"$(cygpath -w \"$REMOTE\")\" /lefttitle=\"$(cygpath -w \"$LOCAL\")\" /righttitle=\"$(cygpath -w \"$REMOTE\")\""
+[mergetool "bc4"]
+    cmd = "\"/cygdrive/c/Program Files (x86)/Beyond Compare 4/Bcomp.exe\" \"$(cygpath -w \"$LOCAL\")\" \"$(cygpath -w \"$REMOTE\")\" \"$(cygpath -w \"$BASE\")\" \"$(cygpath -w \"$MERGED\")\""
+[alias]
+    st = status
+    ci = commit
+    co = checkout
+    br = branch
+
+    # Reset
+    unstage = reset HEAD --
+    flush = "!git reset HEAD && git checkout . && git clean -f"
+
+    # Move forward/Backward
+    fw = "!git log --pretty=oneline --all | grep -B1 `git rev-parse HEAD` | head -n1 | egrep -o '[a-f0-9]{20,}' | xargs git checkout"
+    bw = "!git checkout HEAD~1"
+
+    # Log / Tree
+    l = log \
+         --all \
+         -n30 \
+         --graph \
+         --abbrev-commit \
+         --decorate \
+         --date=relative \
+         --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+
+    lg1 = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+
+    lg2 = log --graph --date=short --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - ad=%ad AT=%at AI=%ai AI=%aI %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+
+    lb = log \
+         --abbrev-commit \
+         --decorate \
+        --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)%ad (%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+
+    lg = !"git lg1"
+
+    # Diff
+    ddd = "!git diff -C --ignore-space-at-eol --ignore-space-change"
+    d   = diff -C                 # Diff Staged     <-> Filesystem
+    dc  = diff -C --cached        # Diff Staged     <-> HEAD
+    dh  = diff HEAD               # Diff Filesystem <-> HEAD
+    dt  = difftool
+    dtc = difftool --cached
+    dp  = diff --patience
+
+    # Grep
+    g  = "!git --no-pager grep --perl-regexp -n -i"
+
+    # My advanced tricks
+    forest = "!~/.scripts/git-forest --pretty=format:\"%C(red)%h %C(magenta)(%ar) %C(blue)%an %C(reset)%s\" --style=1 --reverse"
+    pie = "!git ls-files | pie"
+    chrono-branch = "!for k in `git branch | perl -pe s/^..//`; do echo -e `git show --pretty=format:'%Cgreen%ci %Cblue%cr%Creset' $k -- | head -n 1`\t$k; done | sort -r"
+
+    # To underestand (Advanced)
+    assume = update-index --assume-unchanged
+    unassume = update-index --no-assume-unchanged
+    assumed = "!git ls-files -v | grep ^h | cut -c 3-"
+    unassumeall = !git assumed | xargs git update-index --no-assume-unchanged
+    assumeall = "!git st -s | awk {'print $2'} | xargs git assume"
+
+    ours = "!f() { git checkout --ours $@ && git add $@; }; f"
+    theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
+
+    barebranch = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' -
+    flat = clone --depth 1
+    subpull = !git submodule foreach git pull --tags origin master
+    subrepo = !sh -c 'filter-branch --prune-empty --subdirectory-filter $1 master' -
+    human = name-rev --name-only --refs=refs/heads/*
+    serve = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
+    snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
+
+
