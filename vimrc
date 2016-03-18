@@ -3,6 +3,9 @@ call pathogen#infect()
 call pathogen#helptags()
 
 " The following sets the visibility of the special chars like EOL, TAB, etc.
+set term=xterm+256color
+"let g:solarized_termcolors=256
+set t_Co=256
 let g:solarized_visibility="low"
 set background=light
 "colorscheme hybrid
