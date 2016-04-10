@@ -356,3 +356,6 @@ fi
 # }
 #
 # alias cd=cd_func
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
