@@ -44,3 +44,8 @@ fi
 # if [ -d "${HOME}/info" ]; then
 #   INFOPATH="${HOME}/info:${INFOPATH}"
 # fi
+#
+# Start SSH-Agent and add private key
+eval `ssh-agent.exe`
+ssh-add.exe ~/.ssh/id_rsa
+
