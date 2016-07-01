@@ -44,8 +44,15 @@ fi
 # if [ -d "${HOME}/info" ]; then
 #   INFOPATH="${HOME}/info:${INFOPATH}"
 # fi
-#
+
 # Start SSH-Agent and add private key
-eval `ssh-agent.exe`
-ssh-add.exe ~/.ssh/id_rsa
+if [ "$LOCLABEL" = work ]; then
+    if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+        eval `ssh-agent`
+        ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+    fi
+
+    export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+    ssh-add -l | grep "The agent has no identities" && ssh-add
+fi
 
