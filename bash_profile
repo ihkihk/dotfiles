@@ -47,7 +47,7 @@ fi
 
 # Start SSH-Agent and add private key
 if [ "$LOCLABEL" = work ]; then
-    if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+    if [[ ! -S ~/.ssh/ssh_auth_sock ]]  || ! (ps a | grep -q ssh-agent); then
         eval `ssh-agent`
         ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
     fi
