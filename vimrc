@@ -8,8 +8,8 @@ set term=xterm+256color
 set t_Co=256
 let g:solarized_visibility="low"
 set background=light
-"colorscheme hybrid
-colorscheme solarized
+colorscheme hybrid
+"colorscheme solarized
 call togglebg#map("<F6>")
 
 " These are the colors of EOL (SpecialKey is for TAB/NBSP; NonText for EOL)
@@ -211,7 +211,10 @@ inoremap jj <ESC>
 
 
 map <F5> <esc>:w<CR>:bnext<CR>
+imap <F5> <esc>:w<CR>:bnext<CR>
 map <S-F5> <esc>:w<CR>:bprev<CR>
+imap <S-F5> <esc>:w<CR>:bprev<CR>
+
 au FileType python set omnifunc=pythoncomplete#Complete
 let g:SuperTabDefaultCompletionType = "context"
 set completeopt=menuone,longest,preview
