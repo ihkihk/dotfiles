@@ -1,7 +1,7 @@
-BoldAsFont=yes
+BoldAsFont=no
 Locale=en_US
 Charset=UTF-8
-Font=Anonymous Pro
+Font=Source Code Pro
 IMECursorColour=128,224,160
 ForegroundColour=208,208,208
 BackgroundColour=0,0,0
@@ -37,4 +37,4 @@ ClicksPlaceCursor=yes
 ClicksTargetApp=yes
 CursorType=block
 FontIsBold=no
-FontHeight=14
+FontHeight=13
